@@ -3,7 +3,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-import { RootStackParamList } from '../types/navigation';
+import { RootStackParamList } from '../navegation/types/navigation';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
