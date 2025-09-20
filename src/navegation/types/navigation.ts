@@ -1,6 +1,6 @@
 export type RootStackParamList = {
   Login: undefined;
-  MainTabs: undefined;
+  AppTabs: undefined;
   Bank_Card: undefined;
 };
 

@@ -16,11 +16,11 @@ const LoginScreen = ({ navigation }: Props) => {
       Alert.alert('Error', 'Por favor completa todos los campos');
       return;
     }
-    navigation.replace('MainTabs');
+    navigation.replace('AppTabs');
   };
 
   const handleGuestLogin = () => {
-    navigation.replace('MainTabs');
+    navigation.replace('AppTabs');
   };
 
   const handleCreateAccount = () => {
