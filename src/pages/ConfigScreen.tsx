@@ -24,8 +24,8 @@ import { DynamoDBService } from '../services/DynamoService';
 // TODO: reemplazar por tu fuente real (contexto de auth)
 const useCurrentUser = () => ({
   id: 'USER#1758342031701_4659',
-  wallet: 'wallet_1758342031701_4659',
-  email: 'josuehernandez3362@gmail.com',
+  wallet: 'https://ilp.interledger-test.dev/ocelonusd',
+  email: 'juan@gmail.com',
 });
 
 function randomNonce(len = 16) {

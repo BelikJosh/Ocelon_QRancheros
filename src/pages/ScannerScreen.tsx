@@ -19,6 +19,7 @@ import {
 } from 'react-native';
 import { DynamoDBService } from '../services/DynamoService'; // ⬅️ tu servicio real
 
+
 const CURRENT_USER_ID = 'USER#1758339411234_5487';
 
 function parseOpenPaymentPayload(data: string) {
@@ -45,6 +46,8 @@ function parseOpenPaymentPayload(data: string) {
     return { raw: data };
   }
 }
+
+
 
 export default function ScannerScreen() {
   const [permission, requestPermission] = useCameraPermissions();
