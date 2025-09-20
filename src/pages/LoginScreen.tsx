@@ -120,7 +120,7 @@ const LoginScreen = ({ navigation }: Props) => {
         </TouchableOpacity>
 
         {/* Opción de invitado */}
-        <TouchableOpacity onPress={handleGuestLogin}>
+        <TouchableOpacity >
           <Text style={[styles.guestText, { 
             fontSize: moderateScale(14, 0.3),
             marginTop: verticalScale(10)
