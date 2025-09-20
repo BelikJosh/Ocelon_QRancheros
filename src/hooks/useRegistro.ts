@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { DynamoDBService } from '../services/DynamoServicev2';
+import { DynamoDBService } from '../services/DynamoService';
 
 export const useRegistro = () => {
   const [loading, setLoading] = useState(false);

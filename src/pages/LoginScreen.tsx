@@ -1,22 +1,45 @@
-// screens/LoginScreen.tsx
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
-import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useLogin } from '../hooks/useLogin';
 import { RootStackParamList } from '../navegation/types/navigation';
+import { DynamoDBService } from '../services/DynamoService';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const LoginScreen = ({ navigation }: Props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { loading, error, login, limpiarError } = useLogin();
 
-  const handleLogin = () => {
+  useEffect(() => {
+    if (error) {
+      Alert.alert('Error', error);
+      limpiarError();
+        DynamoDBService.diagnosticarPermisos();
+
+    }
+  }, [error, limpiarError]);
+
+  const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert('Error', 'Por favor completa todos los campos');
       return;
     }
-    navigation.replace('AppTabs');
+
+    // Validar formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      Alert.alert('Error', 'Por favor ingresa un email válido');
+      return;
+    }
+
+    const resultado = await login(email, password);
+    
+    if (resultado.success) {
+      Alert.alert('¡Éxito!', 'Inicio de sesión exitoso');
+      navigation.replace('AppTabs');
+    }
   };
 
   const handleGuestLogin = () => {
@@ -24,8 +47,7 @@ const LoginScreen = ({ navigation }: Props) => {
   };
 
   const handleCreateAccount = () => {
-    // Navegar a pantalla de registro
-    Alert.alert('Próximamente', 'Esta función estará disponible pronto');
+    navigation.navigate('CrearUsuario');
   };
 
   // Funciones de escala responsiva
@@ -87,6 +109,7 @@ const LoginScreen = ({ navigation }: Props) => {
           placeholderTextColor="#7f8c8d"
           value={email}
           onChangeText={setEmail}
+          editable={!loading}
         />
         
         <Text style={[styles.label, { 
@@ -107,23 +130,32 @@ const LoginScreen = ({ navigation }: Props) => {
           placeholderTextColor="#7f8c8d"
           value={password}
           onChangeText={setPassword}
+          editable={!loading}
         />
 
         {/* Botón de crear cuenta */}
-        <TouchableOpacity onPress={() => navigation.navigate('CrearUsuario')}>
+        <TouchableOpacity 
+          onPress={handleCreateAccount} 
+          disabled={loading}
+        >
           <Text style={[styles.createAccountText, { 
             fontSize: moderateScale(14, 0.3),
-            marginTop: verticalScale(10)
+            marginTop: verticalScale(10),
+            opacity: loading ? 0.5 : 1
           }]}>
             Crear cuenta
           </Text>
         </TouchableOpacity>
 
         {/* Opción de invitado */}
-        <TouchableOpacity >
+        <TouchableOpacity 
+          onPress={handleGuestLogin} 
+          disabled={loading}
+        >
           <Text style={[styles.guestText, { 
             fontSize: moderateScale(14, 0.3),
-            marginTop: verticalScale(10)
+            marginTop: verticalScale(10),
+            opacity: loading ? 0.5 : 1
           }]}>
             Continuar como invitado
           </Text>
@@ -132,18 +164,23 @@ const LoginScreen = ({ navigation }: Props) => {
 
       {/* Botón de Entrar */}
       <TouchableOpacity 
-        style={[styles.mainButton, {
+        style={[styles.mainButton, loading && styles.buttonDisabled, {
           padding: verticalScale(15),
           borderRadius: horizontalScale(10),
           marginBottom: verticalScale(5),
         }]} 
         onPress={handleLogin}
+        disabled={loading}
       >
-        <Text style={[styles.mainButtonText, { 
-          fontSize: moderateScale(18, 0.3) 
-        }]}>
-          Iniciar sesión
-        </Text>
+        {loading ? (
+          <ActivityIndicator color="#FFFFFF" />
+        ) : (
+          <Text style={[styles.mainButtonText, { 
+            fontSize: moderateScale(18, 0.3) 
+          }]}>
+            Iniciar sesión
+          </Text>
+        )}
       </TouchableOpacity>
 
       {/* Separador */}
@@ -166,11 +203,12 @@ const LoginScreen = ({ navigation }: Props) => {
 
       {/* Botón de Google */}
       <TouchableOpacity 
-        style={[styles.googleButton, {
+        style={[styles.googleButton, loading && styles.buttonDisabled, {
           padding: verticalScale(12),
           borderRadius: horizontalScale(10),
           marginBottom: verticalScale(20),
         }]} 
+        disabled={loading}
       >
         <Image
           source={require('../../assets/images/Logo_Google.png')}
@@ -190,9 +228,10 @@ const LoginScreen = ({ navigation }: Props) => {
 
       {/* Enlaces legales */}
       <View style={styles.legalLinks}>
-        <TouchableOpacity>
+        <TouchableOpacity disabled={loading}>
           <Text style={[styles.legalText, { 
-            fontSize: moderateScale(12, 0.3) 
+            fontSize: moderateScale(12, 0.3),
+            opacity: loading ? 0.5 : 1
           }]}>
             Términos de servicio
           </Text>
@@ -203,9 +242,10 @@ const LoginScreen = ({ navigation }: Props) => {
         }]}>
           |
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity disabled={loading}>
           <Text style={[styles.legalText, { 
-            fontSize: moderateScale(12, 0.3) 
+            fontSize: moderateScale(12, 0.3),
+            opacity: loading ? 0.5 : 1
           }]}>
             Política de privacidad
           </Text>
@@ -262,6 +302,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#3498db',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  buttonDisabled: {
+    backgroundColor: '#95a5a6',
   },
   mainButtonText: {
     color: '#FFFFFF',
