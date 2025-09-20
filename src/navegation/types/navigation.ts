@@ -1,7 +1,7 @@
 export type RootStackParamList = {
   Login: undefined;
   AppTabs: undefined;
-  Bank_Card: undefined;
+  CrearUsuario: undefined; // ← Agregar esta línea
 };
 
 export type TabParamList = {

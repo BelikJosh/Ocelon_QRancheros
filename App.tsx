@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { RootStackParamList } from './src/navegation/types/navigation';
 import AppTabs from './src/pages/AppTabs';
+import CrearUsuarioScreen from './src/pages/CrearUsuarioScreen';
 import LoginScreen from './src/pages/LoginScreen';
 
 
@@ -20,6 +21,8 @@ export default function App() {
       >
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="AppTabs" component={AppTabs} />
+        <Stack.Screen name="CrearUsuario" component={CrearUsuarioScreen} /> 
+
       </Stack.Navigator>
     </NavigationContainer>
 
