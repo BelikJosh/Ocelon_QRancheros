@@ -1,50 +1,118 @@
-# Welcome to your Expo app 👋
+# OCELON
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<p align="center">
+  <img src="https://github.com/BelikJosh/Ocelon_QRancheros/blob/main/assets/images/Logo_ocelon.jpg" width="300" alt="OCELON">
+</p>
 
-## Get started
+## What is OCELON?
 
-1. Install dependencies
+Ocelon is a solution that modernizes the parking experience through **dynamic QR codes** and **mobile payments**, eliminating physical tickets, lines, and unnecessary waiting.
+It is designed to be **secure, scalable, and eco-friendly**, offering interoperability with multiple payment methods.
 
+### **Use Cases**
+
+- Shopping center parking
+- Airports and hospitals
+- Mass events
+- Corporate spaces
+
+## **System Components**
+
+Ocelon is composed of the following modules:
+
+- **Mobile App**: User interface ([React Native](https://reactnative.dev/docs/environment-setup) + Expo).
+- **Backend API**: Stay management, QR code validation, and payments.
+- **Cloud Database**: [AWS DynamoDB](https://aws.amazon.com/dynamodb/pricing/?refid=9a33b60a-429c-4f86-9a5c-bde883d6c81c) for metadata.
+- **Secure Storage**: [AWS S3](https://aws.amazon.com/s3/getting-started/?nc1=h_ls) for QR codes.
+- **Payment Gateway**: Integration with  [**Open Payments**](https://github.com/interledger/open-payments) for secure digital payments.
+
+## **Architecture**
+
+[Mobile App] <-> [JSON API] <-> [AWS DynamoDB + S3] <-> [Open Payments]
+
+## **Benefits**
+
+- **Fast and secure experience**: Skip the line.
+- **Full interoperability**: With the use of Open Payments, it becomes compatible with banks, wallets, and cryptocurrencies.
+- **Operational savings**: Paperless, less maintenance.
+- **Sustainability**: Paperless, smaller carbon footprint.
+- **Inclusion**: Digital options and cash payment machines.
+
+## **Technologies**
+
+- **Frontend**: React Native + Expo (TypeScript)
+- **Backend**: AWS (DynamoDB, S3)
+- **Integration**: JSON APIs
+- **Payments**: Open Payments
+- **Security**: TLS, tokenization, access control
+
+## **Installation and Local Environment**
+
+### **Requirements**
+- [Node.js](https://nodejs.org/en) (recommended version in .nvmrc)
+- [NVM](https://github.com/nvm-sh/nvm) for managing Node versions
+- [pnpm](https://pnpm.io/es/installation) as the package manager
+- [Expo CLI](https://docs.expo.dev/more/expo-cli) for mobile development
+- AWS CLI configured with credentials
+- Open Payments account for integration testing
+
+### **Environment Setup**
+
+**1. Install the correct version of Node.**
    ```bash
-   npm install
+   nvm install
+   nvm use
+   ```
+**2. Enable corepack and pnpm**
+   ```bash
+   corepack enable
+   ```
+**3. Install project dependencies**
+   ```bash
+   pnpm install
+   ```
+**4. Install Expo CLI globally (if not already installed)**
+   ```bash
+   npm install --global expo-cli
+   ```
+**5. Set environment variables**
+   ```bash|
+   cp .env.example .env
+   ```
+**Edit the .env file with your credentials (AWS, Open Payments, etc.)**
+
+**6. Connection with DynamoDB and AWS**
+   ```bash
+   npm install @aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb
+   ```
+**7. Data Encryption**
+   ```bash
+   npm install react-native-get-random-values
    ```
 
-2. Start the app
-
+## **Start the app**
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
+## **Get a fresh project**
 
 When you're ready, run:
 
 ```bash
 npm run reset-project
 ```
-
 This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-## Learn more
+## **Team**
 
-To learn more about developing your project with Expo, look at the following resources:
+| Name | Role |
+|--------------------------------|------------------------------------------|
+| Iram Aguilar Gaméz Aguilar | Project Lead & Backend Architect |
+| Josue David Hernández Durón | Backend Developer & Cloud Infrastructure |
+| David Antonio Rangel García | Frontend Developer |
+| Alondra Rubí Valdés Mora | UX/UI Designer & QA |
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## **License**
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This project was developed as part of a Hackathon and is open to future collaboration.
