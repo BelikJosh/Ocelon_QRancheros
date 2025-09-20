@@ -1,11 +1,10 @@
-// ScannerScreen.tsx (versión sin returns tempranos)
+// ScannerScreen.tsx
 import { useNavigation } from '@react-navigation/native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { saveScannedQrByUserId } from '../services/api';
+import { DynamoDBService } from '../services/DynamoService'; // ⬅️ usa tu servicio real
 
-// Si ya tienes el id en tu contexto/auth, úsalo desde ahí
 const CURRENT_USER_ID = 'USER#1758339411234_5487';
 
 function parseOpenPaymentPayload(data: string) {
@@ -34,24 +33,32 @@ function parseOpenPaymentPayload(data: string) {
 }
 
 export default function ScannerScreen() {
-  // ✅ TODOS los hooks arriba, sin returns antes
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation<any>();
 
+  // anti-spam: protege de múltiples lecturas en milisegundos
+  const lastDataRef = useRef<string | null>(null);
+
   const onBarcodeScanned = useCallback(
     async ({ data }: { data: string; type?: string }) => {
-      if (scanned) return;
+      // evita spams del mismo QR repetido
+      if (scanned || data === lastDataRef.current) return;
+      lastDataRef.current = data;
+
       setScanned(true);
       setLoading(true);
       try {
-        await saveScannedQrByUserId(CURRENT_USER_ID, data);
+        // ⬇️ guarda el QR en Dynamo (campo "QR" del usuario actual)
+        await DynamoDBService.actualizarQRUsuario(CURRENT_USER_ID, data);
+
         const parsed = parseOpenPaymentPayload(data);
         navigation.navigate('Wallet', { qr: parsed });
       } catch (e) {
         console.error(e);
         Alert.alert('Error', 'No se pudo guardar el QR. Intenta de nuevo.');
+        lastDataRef.current = null; // permite reintentar
       } finally {
         setLoading(false);
         setTimeout(() => setScanned(false), 600);
@@ -60,7 +67,6 @@ export default function ScannerScreen() {
     [scanned, navigation]
   );
 
-  // 👇 En lugar de return temprano, componemos el contenido condicional
   let content: React.ReactNode = null;
 
   if (!permission) {
@@ -92,7 +98,7 @@ export default function ScannerScreen() {
           style={StyleSheet.absoluteFill}
           facing="back"
           barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
-          onBarcodeScanned={onBarcodeScanned as any} // cast por compatibilidad de tipos
+          onBarcodeScanned={onBarcodeScanned as any}
         />
         <View style={styles.overlay}>
           <Text style={styles.overlayTitle}>Apunta al código QR</Text>
