@@ -3,8 +3,8 @@ import AWS from 'aws-sdk';
 // Configurar AWS con las credenciales CORRECTAS
 const config = {
   region: 'us-east-1',
-  accessKeyId: '', // ← Tu access key
-  secretAccessKey: '', // ← Tu secret key
+  accessKeyId: 'AKIAQ5BAACIVTS7H3ZOE', // ← Tu access key
+  secretAccessKey: 'mYzei6RY5ZdlJRlnkS1gGzRJQyiJKAqMfmr60lFC', // ← Tu secret key
   correctClockSkew: true,
 };
 
@@ -28,6 +28,8 @@ export interface Usuario {
   fechaRegistro: string;
   ultimaActualizacion: string;
   estancias: any[];
+  QR?: string; // ← NUEVO
+
 }
 
 export class DynamoDBService {
@@ -273,5 +275,54 @@ static async diagnosticarPermisos(): Promise<void> {
     });
   }
 
-  
+  static async actualizarQRUsuario(userId: string, qr: string): Promise<void> {
+    const now = new Date().toISOString();
+    const params: AWS.DynamoDB.DocumentClient.UpdateItemInput = {
+      TableName: 'Usuarios',
+      Key: { id: userId },
+      UpdateExpression: 'SET #QR = :qr, #UA = :ua',
+      ExpressionAttributeNames: {
+        '#QR': 'QR',
+        '#UA': 'ultimaActualizacion',
+      },
+      ExpressionAttributeValues: {
+        ':qr': qr,
+        ':ua': now,
+      },
+      ReturnValues: 'NONE',
+    };
+
+    await dynamoDB.update(params).promise();
+  }
+
+  /** (Opcional) Actualiza campos arbitrarios por ID */
+  static async actualizarCamposUsuario(
+    userId: string,
+    fields: Partial<Pick<Usuario, 'QR' | 'telefono' | 'nombre' | 'password' | 'wallet'>>
+  ): Promise<void> {
+    const now = new Date().toISOString();
+
+    const names: Record<string, string> = { '#UA': 'ultimaActualizacion' };
+    const vals: Record<string, any> = { ':ua': now };
+    const sets: string[] = ['#UA = :ua'];
+
+    Object.entries(fields).forEach(([k, v], i) => {
+      const nameKey = `#F${i}`;
+      const valKey = `:v${i}`;
+      names[nameKey] = k;
+      vals[valKey] = v;
+      sets.push(`${nameKey} = ${valKey}`);
+    });
+
+    const params: AWS.DynamoDB.DocumentClient.UpdateItemInput = {
+      TableName: 'Usuarios',
+      Key: { id: userId },
+      UpdateExpression: `SET ${sets.join(', ')}`,
+      ExpressionAttributeNames: names,
+      ExpressionAttributeValues: vals,
+      ReturnValues: 'NONE',
+    };
+
+    await dynamoDB.update(params).promise();
+  }
 }
