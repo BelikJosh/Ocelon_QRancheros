@@ -5,8 +5,8 @@ import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb';
 const client = new DynamoDBClient({
   region: 'us-east-1',
   credentials: {
-    accessKeyId: 'AKIAQ5BAACIVQSVIMZEB',
-    secretAccessKey: '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'
+    accessKeyId: '',
+    secretAccessKey: ''
   },
   // Configuración adicional para React Native
   requestHandler: new (require('@aws-sdk/fetch-http-handler').FetchHttpHandler)({
