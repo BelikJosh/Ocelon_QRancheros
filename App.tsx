@@ -2,9 +2,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import AppTabs from './pages/AppTabs';
-import LoginScreen from './pages/LoginScreen';
-import { RootStackParamList } from './navegation/types/navigation';
+import { RootStackParamList } from './src/navegation/types/navigation';
+import AppTabs from './src/pages/AppTabs';
+import LoginScreen from './src/pages/LoginScreen';
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

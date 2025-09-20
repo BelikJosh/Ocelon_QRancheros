@@ -37,7 +37,7 @@ const LoginScreen = ({ navigation }: Props) => {
     <View style={[styles.container, { padding: horizontalScale(20) }]}>
       {/* Imagen circular responsiva */}
       <Image
-        source={require('../assets/images/Logo_ocelon.jpg')}
+        source={require('../../assets/images/Logo_ocelon.jpg')}
         style={{
           width: horizontalScale(160),
           height: horizontalScale(160),
@@ -173,7 +173,7 @@ const LoginScreen = ({ navigation }: Props) => {
         }]} 
       >
         <Image
-          source={require('../assets/images/Logo_Google.png')}
+          source={require('../../assets/images/Logo_Google.png')}
           style={{
             width: moderateScale(20),
             height: moderateScale(20),
