@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   alignItems: 'center',
   justifyContent: 'center',
   },
-
+ 
   tabBarBg: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: '#121218',
