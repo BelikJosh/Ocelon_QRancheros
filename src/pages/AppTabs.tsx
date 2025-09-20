@@ -5,34 +5,16 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-// ----------------- PANTALLAS (mantengo Home y Map in-file) -----------------
-function HomeScreen() {
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#0b0b0c' }} edges={['top', 'left', 'right']}>
-      <View style={s.center}>
-        {/* Si usas tu logo, descomenta e importa la imagen */}
-        {/* <Image source={require('../../assets/images/Logo_ocelon.jpg')} resizeMode="contain" style={s.logo} /> */}
-        <Text style={s.title}>Bienvenido 👋</Text>
-        <Text style={s.tagline}>Park easily, pay quickly, live better</Text>
-      </View>
-    </SafeAreaView>
-  );
-}
+// 👉 Usa tu HomeScreen real
+import HomeScreen from './HomeScreen';
 
-function MapScreen() {
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#0b0b0c' }} edges={['top', 'left', 'right']}>
-      <View style={s.center}><Text style={s.text}>Mapa (próximamente)</Text></View>
-    </SafeAreaView>
-  );
-}
-
-// Si ya tienes estas páginas reales, importa desde ./pages/*
+// Si ya tienes estas páginas reales, importa desde ./pages/* si aplica
 import ConfigScreen from './ConfigScreen';
+import MapScreen from './MapScreen';
 import ScannerScreen from './ScannerScreen';
 import WalletScreen from './WalletScreen';
 
-// Perfil (si ya tienes una real en pages, importa y borra este comp)
+// Perfil (dummy). Si ya tienes uno real, impórtalo y borra este comp
 function ProfileScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#0b0b0c' }} edges={['top', 'left', 'right']}>
@@ -73,8 +55,8 @@ export default function AppTabs() {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: true,
-        tabBarActiveTintColor: '#cfcfff',
-        tabBarInactiveTintColor: '#8E8E93',
+        tabBarActiveTintColor: '#42b883',
+        tabBarInactiveTintColor: '#174d34ff',
         tabBarLabelStyle: { fontSize: 12, fontWeight: '600', marginBottom: 6 },
         tabBarStyle: styles.tabBar,
         tabBarBackground: () => <View style={styles.tabBarBg} />,
@@ -82,7 +64,7 @@ export default function AppTabs() {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeScreen}   // 👈 ahora sí importado
         options={{
           tabBarIcon: ({ color, size }) => <Ionicons name="home" size={size} color={color} />,
           tabBarLabel: 'Home',
@@ -125,8 +107,6 @@ export default function AppTabs() {
           tabBarLabel: 'Config',
         }}
       />
-
-     
     </Tab.Navigator>
   );
 }
@@ -145,19 +125,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#121218',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    shadowColor: '#000',
+    shadowColor: '#42b883',
     shadowOpacity: 0.18,
     shadowRadius: 12,
-    shadowOffset: { width: 0, height: -4 },
   },
   scannerButton: {
     width: 68,
     height: 68,
     borderRadius: 34,
-    backgroundColor: '#ffd166', // amarillo suave para contrastar el dark
+    backgroundColor: '#42b883',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 28, // lo eleva para el “floating”
+    marginBottom: 28,
     shadowColor: '#000',
     shadowOpacity: 0.3,
     shadowRadius: 10,
@@ -168,8 +147,7 @@ const styles = StyleSheet.create({
 
 const s = StyleSheet.create({
   center: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 24 },
-  logo: { width: 180, height: 180, marginBottom: 12 },
-  title: { fontSize: 22, fontWeight: '800', color: '#fff', marginBottom: 6 },
-  tagline: { fontSize: 16, textAlign: 'center', fontWeight: '600', color: '#cfcfff' },
-  text: { fontSize: 14, color: '#cfcfff' },
+  title: { fontSize: 22, fontWeight: '800', color: '#42b883', marginBottom: 6 },
+  text: { fontSize: 14, color: '#42b883' },
 });
+
