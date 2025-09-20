@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { DynamoDBService, Usuario } from '../services/DynamoService';
+import { DynamoDBService } from '../services/DynamoServicev2';
 
 export const useRegistro = () => {
   const [loading, setLoading] = useState(false);
@@ -17,22 +17,17 @@ export const useRegistro = () => {
     setSuccess(false);
     
     try {
-      const wallet = `wallet_${Date.now()}`;
+      console.log('📝 Iniciando registro de usuario...');
       
-      const usuario: Omit<Usuario, 'fechaRegistro' | 'ultimaActualizacion' | 'estancias'> = {
-        id: `USER#${Date.now()}`,
-        nombre: usuarioData.nombre,
-        email: usuarioData.email,
-        password: usuarioData.password,
-        telefono: usuarioData.telefono,
-        wallet: wallet
-      };
-
-      const resultado = await DynamoDBService.crearUsuario(usuario);
+      const resultado = await DynamoDBService.crearUsuario(usuarioData);
+      console.log('🎉 Usuario registrado exitosamente');
+      
       setSuccess(true);
       return resultado;
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Error desconocido';
+      
+    } catch (err: any) {
+      console.error('❌ Error en hook de registro:', err);
+      const errorMessage = err.message || 'Error desconocido al registrar usuario';
       setError(errorMessage);
       throw err;
     } finally {

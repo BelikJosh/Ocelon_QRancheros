@@ -1,3 +1,7 @@
+import 'react-native-get-random-values';
+import 'react-native-url-polyfill/auto';
+import 'text-encoding-polyfill';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
