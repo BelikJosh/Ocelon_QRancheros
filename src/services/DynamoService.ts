@@ -4,7 +4,7 @@ import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb';
 // Configuración específica para React Native
 const client = new DynamoDBClient({
   region: 'us-east-1',
-  credentials: {
+  credentials: { 
     accessKeyId: '',
     secretAccessKey: ''
   },
