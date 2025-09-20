@@ -110,7 +110,7 @@ const LoginScreen = ({ navigation }: Props) => {
         />
 
         {/* Botón de crear cuenta */}
-        <TouchableOpacity onPress={handleCreateAccount}>
+        <TouchableOpacity onPress={() => navigation.navigate('CrearUsuario')}>
           <Text style={[styles.createAccountText, { 
             fontSize: moderateScale(14, 0.3),
             marginTop: verticalScale(10)
